@@ -1,0 +1,21 @@
+{
+  "name": "react-native-location-view",
+  "version": "0.1.0",
+  "description": "A package to help pick user location with autocomplete and current location support. Uses react-native-maps",
+  "main": "index.js",
+  "author": "Hunaid Hassan <hhunaid@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-native": "^0.51.0",
+    "react-native-cancelable-fetch": "^0.1.1",
+    "react-native-maps": "^0.19.0",
+    "react-native-simple-events": "^1.0.1",
+    "react-native-vector-icons": "^4.4.3"
+  },
+  "files": [
+    "index.js"
+  ]
+}
