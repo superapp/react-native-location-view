@@ -48,17 +48,18 @@ const REVRSE_GEO_CODE_URL = "https://maps.googleapis.com/maps/api/geocode/json";
 export default class AutoCompleteInput extends React.Component {
   static propTypes = {
     apiKey: PropTypes.string.isRequired,
-    language: PropTypes.string
+    language: PropTypes.string,
+    debounceDuration: PropTypes.number.isRequired
   };
 
   static defaultProps = {
     language: 'en'
   };
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this._onChangeText = this._onChangeText.bind(this);
-    this._request = debounce(this._request.bind(this), 300);
+    this._request = debounce(this._request.bind(this), this.props.debounceDuration);
     this._abortRequest = this._abortRequest.bind(this);
     this.fetchAddressForLocation = this.fetchAddressForLocation.bind(this);
     this.blur = this.blur.bind(this);

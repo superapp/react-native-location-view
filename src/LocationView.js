@@ -33,7 +33,7 @@ export default class LocationView extends React.Component {
     markerColor: 'black',
     actionText: 'DONE',
     onLocationSelect: () => ({}),
-    debounceDuration: 200
+    debounceDuration: 300
   };
 
   constructor(props) {
@@ -144,6 +144,7 @@ export default class LocationView extends React.Component {
             ref={input => this._input = input}
             apiKey={this.props.apiKey}
             style={[styles.input, {transform: [{scale: inputScale}]}]}
+            debounceDuration={this.props.debounceDuration}
           />
         </View>
         <TouchableOpacity style={styles.currentLocBtn} onPress={this._getCurrentLocation}>
