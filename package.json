@@ -27,7 +27,7 @@
   "dependencies": {
     "prop-types": "^15.6.0",
     "react-native-cancelable-fetch": "^0.1.1",
-    "react-native-simple-events": "^1.0.1",
+    "react-native-simple-events": "^1.0.1"
   },
   "files": [
     "index.js",
