@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   View, StyleSheet, Animated, Platform, UIManager,
-  TouchableOpacity, Text
+  TouchableOpacity, Text, ViewPropTypes
 } from "react-native";
 import MapView from 'react-native-maps';
 import AutoCompleteInput from "./AutoCompleteInput";
@@ -22,7 +22,7 @@ export default class LocationView extends React.Component {
       longitude: PropTypes.number
     }).isRequired,
     markerColor: PropTypes.string,
-    actionButtonStyle: View.propTypes.style,
+    actionButtonStyle: ViewPropTypes.style,
     actionTextStyle: Text.propTypes.style,
     actionText: PropTypes.string,
     onLocationSelect: PropTypes.func,
