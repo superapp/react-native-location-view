@@ -82,7 +82,8 @@ export default class LocationView extends React.Component {
     ).start();
   }
 
-  _onMapRegionChange() {
+  _onMapRegionChange(region) {
+    this._setRegion(region, false);
     if (this.state.inFocus) {
       this._input.blur();
     }
@@ -102,9 +103,10 @@ export default class LocationView extends React.Component {
     this._animateInput();
   }
 
-  _setRegion(region) {
+  _setRegion(region, animate = true) {
     this.state.region = {...this.state.region, ...region};
-    this._map.animateToRegion(this.state.region);
+    if (animate)
+      this._map.animateToRegion(this.state.region);
   }
 
   _onPlaceSelected(placeId) {
@@ -147,10 +149,13 @@ export default class LocationView extends React.Component {
             debounceDuration={this.props.debounceDuration}
           />
         </View>
-        <TouchableOpacity style={styles.currentLocBtn} onPress={this._getCurrentLocation}>
+        <TouchableOpacity style={[styles.currentLocBtn, {backgroundColor: this.props.markerColor}]} onPress={this._getCurrentLocation}>
           <MaterialIcons name={'my-location'} color={'white'} size={25}/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={[styles.actionButton, this.props.actionButtonStyle]}
+          onPress={() => this.props.onLocationSelect({...this.state.region, address: this._input.getAddress()})}
+        >
           <View>
             <Text style={[styles.actionText, this.props.actionTextStyle]}>{this.props.actionText}</Text>
           </View>

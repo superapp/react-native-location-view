@@ -67,6 +67,7 @@ export default class AutoCompleteInput extends React.Component {
     this._onBlur = this._onBlur.bind(this);
     this._getClearButton = this._getClearButton.bind(this);
     this._onPressClear = this._onPressClear.bind(this);
+    this.getAddress = this.getAddress.bind(this);
   }
 
   componentWillUnmount() {
@@ -141,6 +142,10 @@ export default class AutoCompleteInput extends React.Component {
       (<TouchableOpacity style={styles.btn} onPress={this._onPressClear}>
         <MaterialIcons name={'clear'} size={20}/>
       </TouchableOpacity>) : null;
+  }
+
+  getAddress() {
+    return this.state.loading ? '' : this.state.text;
   }
 
   render() {
