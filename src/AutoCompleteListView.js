@@ -52,13 +52,13 @@ export default class AutoCompleteListView extends React.Component {
   }
 
   componentDidMount() {
-    Events.listen('InputBlur', this.constructor.displayName, this._onTextBlur);
-    Events.listen('InputFocus', this.constructor.displayName, this._onTextFocus);
+    Events.listen('InputBlur', 'ListViewID', this._onTextBlur);
+    Events.listen('InputFocus', 'ListViewID', this._onTextFocus);
   }
 
   componentWillUnmount() {
-    Events.rm('InputBlur', this.constructor.displayName);
-    Events.rm('InputFocus', this.constructor.displayName);
+    Events.rm('InputBlur', 'ListViewID');
+    Events.rm('InputFocus', 'ListViewID');
   }
 
   _onTextFocus() {
