@@ -1,6 +1,6 @@
 {
   "name": "react-native-location-view",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A package to help pick user location with autocomplete and current location support. Uses react-native-maps",
   "main": "index.js",
   "author": "Hunaid Hassan <hhunaid@gmail.com>",
