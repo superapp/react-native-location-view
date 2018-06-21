@@ -15,11 +15,21 @@ const styles = StyleSheet.create({
     paddingRight: 5
   },
   list: {
-    overflow: 'hidden',
     backgroundColor: 'white',
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
-    maxHeight: 220,
+    maxHeight: 220
+  },
+  listContainer: {
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 2,
+    shadowOpacity: 0.24,
+    backgroundColor: 'transparent',
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
   },
   separator: {
     height: StyleSheet.hairlineWidth,
@@ -99,16 +109,17 @@ export default class AutoCompleteListView extends React.Component {
   render() {
     const style = this.state.inFocus ? null : {height: 0};
     return (
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        elevation={3}
-        style={[styles.list, style]}
-        data={this.props.predictions}
-        renderItem={this._renderItem.bind(this)}
-        ItemSeparatorComponent={() => <View style={styles.separator}/>}
-        keyboardShouldPersistTaps={'handled'}
-        keyExtractor={item => item.id}
-      />
+      <View style={styles.listContainer} elevation={3}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          style={[styles.list, style]}
+          data={this.props.predictions}
+          renderItem={this._renderItem.bind(this)}
+          ItemSeparatorComponent={() => <View style={styles.separator}/>}
+          keyboardShouldPersistTaps={'handled'}
+          keyExtractor={item => item.id}
+        />
+      </View>
     )
   }
 }
