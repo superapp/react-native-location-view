@@ -106,20 +106,25 @@ export default class AutoCompleteListView extends React.Component {
     )
   }
 
-  render() {
+  _getFlatList = () => {
     const style = this.state.inFocus ? null : {height: 0};
     return (
-      <View style={styles.listContainer} elevation={3}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          style={[styles.list, style]}
-          data={this.props.predictions}
-          renderItem={this._renderItem.bind(this)}
-          ItemSeparatorComponent={() => <View style={styles.separator}/>}
-          keyboardShouldPersistTaps={'handled'}
-          keyExtractor={item => item.id}
-        />
-      </View>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        elevation={3}
+        style={[styles.list, style]}
+        data={this.props.predictions}
+        renderItem={this._renderItem.bind(this)}
+        ItemSeparatorComponent={() => <View style={styles.separator}/>}
+        keyboardShouldPersistTaps={'handled'}
+        keyExtractor={item => item.id}
+      />
+    );
+  };
+
+  render() {
+    return (
+      Platform.OS === "android" ? this._getFlatList() : <View style={styles.listContainer}>{this._getFlatList()}</View>
     )
   }
 }
