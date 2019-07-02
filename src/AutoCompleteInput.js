@@ -48,9 +48,10 @@ export default class AutoCompleteInput extends React.Component {
     this.setState({ loading: true, predictions: [] });
     let { latitude, longitude } = location;
     this.source = CancelToken.source();
-    axios.get(`${REVRSE_GEO_CODE_URL}?key=${this.props.apiKey}&latlng=${latitude},${longitude}`,
-      { cancelToken: this.source.token },
-    )
+    axios
+      .get(`${REVRSE_GEO_CODE_URL}?key=${this.props.apiKey}&latlng=${latitude},${longitude}`, {
+        cancelToken: this.source.token,
+      })
       .then(({ data }) => {
         this.setState({ loading: false });
         let { results } = data;
@@ -65,15 +66,16 @@ export default class AutoCompleteInput extends React.Component {
     this._abortRequest();
     if (text.length >= 3) {
       this.source = CancelToken.source();
-      axios.get(AUTOCOMPLETE_URL, {
-        cancelToken: this.source.token,
-        params: {
-          input: text,
-          key: this.props.apiKey,
-          language: this.props.language,
-          components: this.props.components.join('|'),
-        },
-      })
+      axios
+        .get(AUTOCOMPLETE_URL, {
+          cancelToken: this.source.token,
+          params: {
+            input: text,
+            key: this.props.apiKey,
+            language: this.props.language,
+            components: this.props.components.join('|'),
+          },
+        })
         .then(({ data }) => {
           let { predictions } = data;
           this.setState({ predictions });
@@ -107,13 +109,14 @@ export default class AutoCompleteInput extends React.Component {
     this.setState({ text: '', predictions: [] });
   };
 
-  _getClearButton = () => this.state.inFocus ? (
-    <TouchableOpacity style={styles.btn} onPress={this._onPressClear}>
-      <MaterialIcons name={'clear'} size={20}/>
-    </TouchableOpacity>
-  ) : null;
+  _getClearButton = () =>
+    this.state.inFocus ? (
+      <TouchableOpacity style={styles.btn} onPress={this._onPressClear}>
+        <MaterialIcons name={'clear'} size={20} />
+      </TouchableOpacity>
+    ) : null;
 
-  getAddress = () => this.state.loading ? '' : this.state.text;
+  getAddress = () => (this.state.loading ? '' : this.state.text);
 
   render() {
     return (
@@ -135,7 +138,7 @@ export default class AutoCompleteInput extends React.Component {
           {this._getClearButton()}
         </View>
         <View style={styles.listViewContainer}>
-          <AutoCompleteListView predictions={this.state.predictions}/>
+          <AutoCompleteListView predictions={this.state.predictions} />
         </View>
       </Animated.View>
     );

@@ -25,7 +25,7 @@ export default class LocationView extends React.Component {
     actionText: PropTypes.string,
     onLocationSelect: PropTypes.func,
     debounceDuration: PropTypes.number,
-    components: PropTypes.arrayOf(PropTypes.string)
+    components: PropTypes.arrayOf(PropTypes.string),
   };
 
   static defaultProps = {
@@ -33,7 +33,7 @@ export default class LocationView extends React.Component {
     actionText: 'DONE',
     onLocationSelect: () => ({}),
     debounceDuration: 300,
-    components: []
+    components: [],
   };
 
   constructor(props) {
@@ -99,11 +99,10 @@ export default class LocationView extends React.Component {
 
   _onPlaceSelected = placeId => {
     this._input.blur();
-    axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`)
-      .then(({data}) => {
-        let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
-        this._setRegion(region);
-      });
+    axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`).then(({ data }) => {
+      let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
+      this._setRegion(region);
+    });
   };
 
   _getCurrentLocation = () => {
