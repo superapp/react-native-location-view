@@ -102,6 +102,7 @@ export default class LocationView extends React.Component {
     axios.get(`${PLACE_DETAIL_URL}?key=${this.props.apiKey}&placeid=${placeId}`).then(({ data }) => {
       let region = (({ lat, lng }) => ({ latitude: lat, longitude: lng }))(data.result.geometry.location);
       this._setRegion(region);
+      this.setState({placeDetails: data.result});
     });
   };
 
@@ -149,7 +150,7 @@ export default class LocationView extends React.Component {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.actionButton, this.props.actionButtonStyle]}
-          onPress={() => this.props.onLocationSelect({ ...this.state.region, address: this._input.getAddress() })}
+          onPress={() => this.props.onLocationSelect({ ...this.state.region, address: this._input.getAddress(), placeDetails: this.state.placeDetails })}
         >
           <View>
             <Text style={[styles.actionText, this.props.actionTextStyle]}>{this.props.actionText}</Text>
