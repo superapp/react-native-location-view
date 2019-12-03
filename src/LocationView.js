@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
   },
   mapView: {
     ...StyleSheet.absoluteFillObject,
+    //
   },
   fullWidthContainer: {
     position: 'absolute',
