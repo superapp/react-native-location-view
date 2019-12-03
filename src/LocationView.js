@@ -1,13 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet, Animated, Platform, UIManager, TouchableOpacity, Text, ViewPropTypes } from 'react-native';
+import { View, StyleSheet, Animated, Platform, UIManager, 
+  TouchableOpacity, Text, ViewPropTypes, Alert } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import Events from 'react-native-simple-events';
 import MapView from 'react-native-maps';
-
+import Geolocation from '@react-native-community/geolocation';
 import AutoCompleteInput from './AutoCompleteInput';
+
 
 const PLACE_DETAIL_URL = 'https://maps.googleapis.com/maps/api/place/details/json';
 const DEFAULT_DELTA = { latitudeDelta: 0.015, longitudeDelta: 0.0121 };
@@ -106,10 +108,25 @@ export default class LocationView extends React.Component {
   };
 
   _getCurrentLocation = () => {
-    navigator.geolocation.getCurrentPosition(position => {
-      let location = (({ latitude, longitude }) => ({ latitude, longitude }))(position.coords);
-      this._setRegion(location);
-    });
+
+    Geolocation.getCurrentPosition(
+      position => {
+       
+        const { latitude, longitude } = position.coords;
+        let location = (({ latitude, longitude }) => ({ latitude, longitude }))(position.coords);
+        this._setRegion(location);
+      },
+      error =>{ 
+        Alert.alert("","Your location could not be determined. Please enter it manually.");
+        console.log('your current lacoiton issue ', error);
+      } ,
+      {
+        enableHighAccuracy: Platform.OS === "ios",
+        timeout: 8000,
+        maximumAge: 10000,
+      }
+    );
+    
   };
 
   render() {
