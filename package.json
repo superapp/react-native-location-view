@@ -46,7 +46,8 @@
   "peerDependencies": {
     "react-native": ">= 0.50",
     "react-native-maps": ">= 0.19.0",
-    "react-native-vector-icons": "^4.4.3"
+    "react-native-vector-icons": "^4.4.3",
+    "@react-native-community/geolocation": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^6.0.1",
