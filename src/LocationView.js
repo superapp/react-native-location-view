@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Animated, Platform, UIManager, 
-  TouchableOpacity, Text, ViewPropTypes, Alert } from 'react-native';
+  TouchableOpacity, Text, ViewPropTypes } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
@@ -28,6 +28,9 @@ export default class LocationView extends React.Component {
     onLocationSelect: PropTypes.func,
     debounceDuration: PropTypes.number,
     components: PropTypes.arrayOf(PropTypes.string),
+    timeout: PropTypes.number,
+    maximumAge: PropTypes.number,
+    enableHighAccuracy: PropTypes.bool
   };
 
   static defaultProps = {
@@ -36,6 +39,9 @@ export default class LocationView extends React.Component {
     onLocationSelect: () => ({}),
     debounceDuration: 300,
     components: [],
+    timeout: 15000,
+    maximumAge: Infinity,
+    enableHighAccuracy: true
   };
 
   constructor(props) {
@@ -108,25 +114,19 @@ export default class LocationView extends React.Component {
   };
 
   _getCurrentLocation = () => {
-
+    const { timeout, maximumAge, enableHighAccuracy } = this.props;
     Geolocation.getCurrentPosition(
       position => {
-       
         const { latitude, longitude } = position.coords;
-        let location = (({ latitude, longitude }) => ({ latitude, longitude }))(position.coords);
-        this._setRegion(location);
+        this._setRegion({latitude, longitude});
       },
-      error =>{ 
-        Alert.alert("","Your location could not be determined. Please enter it manually.");
-        console.log('your current lacoiton issue ', error);
-      } ,
+      error => console.log(error.message),
       {
-        enableHighAccuracy: Platform.OS === "ios",
-        timeout: 8000,
-        maximumAge: 10000,
+        enableHighAccuracy,
+        timeout,
+        maximumAge,
       }
     );
-    
   };
 
   render() {
