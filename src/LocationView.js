@@ -30,7 +30,9 @@ export default class LocationView extends React.Component {
     components: PropTypes.arrayOf(PropTypes.string),
     timeout: PropTypes.number,
     maximumAge: PropTypes.number,
-    enableHighAccuracy: PropTypes.bool
+    enableHighAccuracy: PropTypes.bool,
+    children: PropTypes.node,
+    showSearchInput: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -41,7 +43,9 @@ export default class LocationView extends React.Component {
     components: [],
     timeout: 15000,
     maximumAge: Infinity,
-    enableHighAccuracy: true
+    enableHighAccuracy: true,
+    children: null,
+    showSearchInput: true,
   };
 
   constructor(props) {
@@ -87,7 +91,7 @@ export default class LocationView extends React.Component {
   };
 
   _onMapRegionChangeComplete = region => {
-    this._input.fetchAddressForLocation(region);
+   this.props.showSearchInput && this._input.fetchAddressForLocation(region);
   };
 
   _onTextFocus = () => {
@@ -102,7 +106,7 @@ export default class LocationView extends React.Component {
 
   _setRegion = (region, animate = true) => {
     this.state.region = { ...this.state.region, ...region };
-    if (animate) this._map.animateToRegion(this.state.region);
+    if (animate) this._map.animateToRegion(this.state.region,2000);
   };
 
   _onPlaceSelected = placeId => {
@@ -115,19 +119,17 @@ export default class LocationView extends React.Component {
   };
 
   _getCurrentLocation = () => {
-    const { timeout, maximumAge, enableHighAccuracy } = this.props;
-    Geolocation.getCurrentPosition(
-      position => {
-        const { latitude, longitude } = position.coords;
-        this._setRegion({latitude, longitude});
-      },
-      error => console.log(error.message),
-      {
-        enableHighAccuracy,
-        timeout,
-        maximumAge,
-      }
-    );
+    try {
+      Geolocation.getCurrentPosition(
+          position => {
+              let userCordinates = { latitude: position.coords.latitude, longitude: position.coords.longitude }
+              this._setRegion(userCordinates);
+          },
+          error => {console.log(error) },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 });
+  } catch (error) {
+      console.log(error)
+  }
   };
 
   render() {
@@ -139,18 +141,23 @@ export default class LocationView extends React.Component {
           style={styles.mapView}
           region={this.state.region}
           showsMyLocationButton={true}
-          showsUserLocation={false}
+          showsUserLocation={true}
           onPress={({ nativeEvent }) => this._setRegion(nativeEvent.coordinate)}
           onRegionChange={this._onMapRegionChange}
           onRegionChangeComplete={this._onMapRegionChangeComplete}
-        />
+        >
+        {this.props.children}
+          </MapView>
+        {this.props.children}
         <Entypo
           name={'location-pin'}
           size={30}
           color={this.props.markerColor}
           style={{ backgroundColor: 'transparent' }}
         />
-        <View style={styles.fullWidthContainer}>
+        {
+          this.props.showSearchInput && 
+          <View style={styles.fullWidthContainer}>
           <AutoCompleteInput
             ref={input => (this._input = input)}
             apiKey={this.props.apiKey}
@@ -159,6 +166,8 @@ export default class LocationView extends React.Component {
             components={this.props.components}
           />
         </View>
+        }
+       
         <TouchableOpacity
           style={[styles.currentLocBtn, { backgroundColor: this.props.markerColor }]}
           onPress={this._getCurrentLocation}
@@ -173,7 +182,7 @@ export default class LocationView extends React.Component {
             <Text style={[styles.actionText, this.props.actionTextStyle]}>{this.props.actionText}</Text>
           </View>
         </TouchableOpacity>
-        {this.props.children}
+
       </View>
     );
   }

@@ -66,3 +66,4 @@ export default class SelectLocationScreen extends React.Component {
 | actionText | string | No |
 | onLocationSelect | function | No |
 | debounceDuration | number | No |
+| showSearchInput | Bool | No |
