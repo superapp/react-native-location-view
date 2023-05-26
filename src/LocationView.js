@@ -32,6 +32,7 @@ export default class LocationView extends React.Component {
     maximumAge: PropTypes.number,
     enableHighAccuracy: PropTypes.bool,
     children: PropTypes.node,
+    showSearchInput: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -44,6 +45,7 @@ export default class LocationView extends React.Component {
     maximumAge: Infinity,
     enableHighAccuracy: true,
     children: null,
+    showSearchInput: true,
   };
 
   constructor(props) {
@@ -89,7 +91,7 @@ export default class LocationView extends React.Component {
   };
 
   _onMapRegionChangeComplete = region => {
-    this._input.fetchAddressForLocation(region);
+   this.props.showSearchInput && this._input.fetchAddressForLocation(region);
   };
 
   _onTextFocus = () => {
@@ -153,7 +155,9 @@ export default class LocationView extends React.Component {
           color={this.props.markerColor}
           style={{ backgroundColor: 'transparent' }}
         />
-        <View style={styles.fullWidthContainer}>
+        {
+          this.props.showSearchInput && 
+          <View style={styles.fullWidthContainer}>
           <AutoCompleteInput
             ref={input => (this._input = input)}
             apiKey={this.props.apiKey}
@@ -162,6 +166,8 @@ export default class LocationView extends React.Component {
             components={this.props.components}
           />
         </View>
+        }
+       
         <TouchableOpacity
           style={[styles.currentLocBtn, { backgroundColor: this.props.markerColor }]}
           onPress={this._getCurrentLocation}
